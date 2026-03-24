@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>黎湘蕾 - UI/UX设计作品集</title>
+    <!-- 引入 Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- 引入 Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Noto+Sans+SC:wght@300;400;500;700&family=Playfair+Display:ital@1&display=swap" rel="stylesheet">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['"Noto Sans SC"', 'Inter', 'sans-serif'],
+                        signature: ['"Playfair Display"', 'serif'],
+                    },
+                    colors: {
+                        darkBg: '#080a0f',
+                        sidebarBg: '#10131a',
+                        lightText: '#e2e8f0',
+                        mutedText: '#828a9a',
+                        accent: '#4f6bff',
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        body {
+            background-color: #080a0f;
+            color: #e2e8f0;
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+            /* 基础字号随屏幕宽度微调，方便使用rem */
+            font-size: 16px; 
+        }
+
+        /* 隐藏滚动条 */
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+
+        /* 背景光晕 - 使用 vw 保持流体感 */
+        .glow {
+            position: fixed;
+            width: 70vw;
+            height: 70vw;
+            border-radius: 50%;
+            filter: blur(10vw);
+            z-index: 0;
+            pointer-events: none;
+            opacity: 0.1;
+        }
+
+        /* 视图切换过渡 */
+        .view-transition { transition: opacity 0.4s ease, transform 0.4s ease; }
+        
+        .list-item-group:hover .arrow-icon { transform: translate(0.5rem, 0.5rem); color: #4f6bff; }
+        .list-item-group { transition: all 0.4s ease; }
+        
+        .sidebar-item { transition: all 0.3s ease; position: relative; }
+        .sidebar-item.active { background: rgba(79, 107, 255, 0.1); color: #fff; }
+        .sidebar-item.active::before {
+            content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 0.25rem;
+            background: #4f6bff; box-shadow: 0 0 1rem #4f6bff;
+        }
+
+        .image-enter { animation: fadeInScale 0.7s cubic-bezier(0.22, 1, 0.36, 1) forwards; }
+        @keyframes fadeInScale {
+            from { opacity: 0; transform: translateY(2rem) scale(0.98); }
+            to { opacity: 1; transform: translateY(0) scale(1); }
+        }
+
+        /* 顶部导航毛玻璃 */
+        .glass-nav {
+            background: rgba(8, 10, 15, 0.85);
+            backdrop-filter: blur(1rem);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        /* 移动端侧边栏抽屉动画 */
+        #project-sidebar {
+            transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        @media (max-width: 768px) {
+            #project-sidebar.closed { transform: translateX(-100%); }
+        }
+        
+        /* 针对DW编辑器的流体容器优化 */
+        .fluid-container {
+            width: 92%;
+            max-width: 1440px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+    </style>
+</head>
+<body class="selection:bg-accent selection:text-white">
+
+    <!-- 背景装饰 -->
+    <div class="glow bg-orange-900 -top-[20%] -left-[10%]"></div>
+    <div class="glow bg-blue-900 -bottom-[20%] -right-[10%]"></div>
+
+    <div id="app" class="relative z-10 w-full min-h-screen">
+        
+        <!-- 第一层：首页简介 (Home View) -->
+        <div id="home-view" class="view-transition w-full">
+            <main class="fluid-container py-12 md:py-24">
+                
+                <section class="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-16 items-center">
+                    <!-- 左侧文案 -->
+                    <div class="lg:col-span-7 order-2 lg:order-1">
+                        <div class="mb-8 md:mb-12">
+                            <h2 class="text-xl md:text-2xl font-light mb-4 text-gray-400">您好，</h2>
+                            <div class="relative inline-block">
+                                <h1 class="text-4xl md:text-6xl lg:text-7xl font-bold tracking-wider leading-tight">我是黎湘蕾。</h1>
+                                <span class="absolute -bottom-4 right-0 text-3xl md:text-5xl font-signature text-white/20 italic transform translate-x-4 pointer-events-none">Laurel L.</span>
+                            </div>
+                        </div>
+                        <p class="text-sm md:text-lg text-mutedText leading-relaxed mb-12 max-w-[90%] font-light">
+                            5年UI设计工作经验，项目经验丰富。具备体验设计思维，关注用户场景，了解设计调研方法。乐于学习新事物，注重自身成长，关注设计流行趋势，有成熟的设计方法论。
+                        </p>
+                        
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12">
+                            <div>
+                                <h3 class="text-base font-bold tracking-widest mb-6 border-b border-white/10 pb-2 inline-block">工作经历</h3>
+                                <div class="space-y-6">
+                                    <div class="group">
+                                        <div class="text-accent text-xs mb-1 font-mono">2023.03 - 2025.06</div>
+                                        <h4 class="text-white font-medium text-base group-hover:text-accent transition-colors">金斧子科技 · UI设计师</h4>
+                                        <p class="text-[10px] text-mutedText mt-1 uppercase tracking-wider">负责金融全平台设计及视觉升级</p>
+                                    </div>
+                                    <div class="group">
+                                        <div class="text-accent text-xs mb-1 font-mono">2022.06 - 2023.02</div>
+                                        <h4 class="text-white font-medium text-base group-hover:text-accent transition-colors">领克科技 · UI设计师</h4>
+                                        <p class="text-[10px] text-mutedText mt-1 uppercase tracking-wider">参与海外App 3.0及电商业务迭代</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div>
+                                <h3 class="text-base font-bold tracking-widest mb-6 border-b border-white/10 pb-2 inline-block">专业技能</h3>
+                                <div class="flex flex-wrap gap-2">
+                                    <span class="px-3 py-1 bg-white/5 rounded-full text-[10px] text-gray-300">Figma</span>
+                                    <span class="px-3 py-1 bg-white/5 rounded-full text-[10px] text-gray-300">AIGC</span>
+                                    <span class="px-3 py-1 bg-white/5 rounded-full text-[10px] text-gray-300">Blender</span>
+                                    <span class="px-3 py-1 bg-white/5 rounded-full text-[10px] text-gray-300">动效设计</span>
+                                    <span class="px-3 py-1 bg-white/5 rounded-full text-[10px] text-gray-300">数据可视化</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 右侧照片 -->
+                    <div class="lg:col-span-5 order-1 lg:order-2">
+                        <div class="rounded-[2rem] overflow-hidden bg-sidebarBg border border-white/10 aspect-[4/5] relative group shadow-2xl w-full">
+                            <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&w=1000&auto=format&fit=crop&grayscale=true" class="absolute inset-0 w-full h-full object-cover opacity-50 mix-blend-luminosity group-hover:scale-105 transition-transform duration-700">
+                            <div class="absolute inset-0 bg-gradient-to-t from-darkBg via-transparent to-transparent opacity-80"></div>
+                            <div class="absolute bottom-0 p-[8%] w-full">
+                                <div class="flex items-center gap-3 mb-2">
+                                    <h2 class="text-3xl font-bold text-white tracking-widest">黎湘蕾</h2>
+                                    <span class="text-[10px] px-2 py-0.5 border border-accent/30 text-accent bg-accent/10 rounded">Lv.5</span>
+                                </div>
+                                <p class="text-xs text-gray-400 font-light tracking-wide">UI/UX设计师 / 广州美术学院科班</p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- 列表部分 -->
+                <section class="mt-24 md:mt-40">
+                    <div class="flex flex-col md:flex-row justify-between items-baseline mb-12 gap-4">
+                        <div class="text-[10px] text-mutedText tracking-[0.4em] uppercase font-bold">[ Catalogue ]</div>
+                        <h2 class="text-4xl md:text-7xl font-bold tracking-tighter text-right text-transparent bg-clip-text bg-gradient-to-r from-white via-blue-100 to-blue-400">WHAT I CAN DO</h2>
+                    </div>
+                    <div class="border-t border-white/10" id="catalogue-list">
+                        <!-- 由JS生成 -->
+                    </div>
+                </section>
+            </main>
+        </div>
+
+        <!-- 第二层：项目浏览器 (Detail View) -->
+        <div id="detail-view" class="view-transition hidden fixed inset-0 flex flex-col bg-darkBg overflow-hidden w-full h-full">
+            
+            <!-- 顶部导航栏 -->
+            <nav class="glass-nav h-[4.5rem] flex-shrink-0 flex items-center px-[4%] justify-between z-50">
+                <div class="flex items-center gap-4">
+                    <button onclick="showHome()" class="flex items-center gap-2 group">
+                        <div class="w-10 h-10 rounded-xl bg-white/5 flex items-center justify-center group-hover:bg-accent transition-all">
+                            <svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M15 19l-7-7 7-7" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                        </div>
+                        <span class="text-[10px] font-bold tracking-[0.2em] hidden sm:block">HOME</span>
+                    </button>
+                    <button onclick="toggleSidebar()" class="md:hidden w-10 h-10 rounded-xl bg-white/5 flex items-center justify-center">
+                        <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M4 6h16M4 12h16M4 18h16" stroke-width="2" stroke-linecap="round"/></svg>
+                    </button>
+                </div>
+                
+                <div class="flex items-center gap-2 md:gap-4 overflow-x-auto no-scrollbar max-w-[60%]">
+                    <button onclick="switchCategory(0)" class="nav-cat-btn px-4 py-2 text-[10px] text-mutedText hover:text-white transition-all rounded-lg whitespace-nowrap" data-cat="0">UI/UX</button>
+                    <button onclick="switchCategory(1)" class="nav-cat-btn px-4 py-2 text-[10px] text-mutedText hover:text-white transition-all rounded-lg whitespace-nowrap" data-cat="1">WEB</button>
+                    <button onclick="switchCategory(2)" class="nav-cat-btn px-4 py-2 text-[10px] text-mutedText hover:text-white transition-all rounded-lg whitespace-nowrap" data-cat="2">VISUAL</button>
+                    <button onclick="switchCategory(3)" class="nav-cat-btn px-4 py-2 text-[10px] text-mutedText hover:text-white transition-all rounded-lg whitespace-nowrap" data-cat="3">BRAND</button>
+                    <button onclick="switchCategory(4)" class="nav-cat-btn px-4 py-2 text-[10px] text-mutedText hover:text-white transition-all rounded-lg whitespace-nowrap" data-cat="4">OTHERS</button>
+                </div>
+
+                <div class="hidden lg:flex items-center gap-4">
+                    <div class="text-right">
+                        <p class="text-[10px] text-white font-bold leading-none">LAUREL L.</p>
+                        <p class="text-[8px] text-mutedText mt-1 uppercase tracking-tighter">Selected Works</p>
+                    </div>
+                </div>
+            </nav>
+
+            <div class="flex flex-1 overflow-hidden relative w-full h-full">
+                <!-- 侧边栏 - 使用百分比宽度 -->
+                <aside id="project-sidebar" class="fixed md:relative inset-y-0 left-0 w-[80%] md:w-[22%] bg-sidebarBg border-r border-white/5 flex flex-col h-full z-40 closed md:transform-none">
+                    <div class="p-[10%] flex-shrink-0">
+                        <div class="flex items-center justify-between mb-2">
+                            <h3 id="current-cat-name" class="text-lg font-bold tracking-wider text-white">CATEGORY</h3>
+                            <button onclick="toggleSidebar()" class="md:hidden text-mutedText">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M6 18L18 6M6 6l12 12" stroke-width="2" stroke-linecap="round"/></svg>
+                            </button>
+                        </div>
+                        <p class="text-[9px] text-mutedText uppercase tracking-[0.2em]">Curated projects</p>
+                    </div>
+                    <div id="project-sidebar-list" class="flex-1 overflow-y-auto no-scrollbar px-[4%] pb-12">
+                        <!-- 由JS生成 -->
+                    </div>
+                </aside>
+
+                <!-- 遮罩 -->
+                <div id="sidebar-overlay" onclick="toggleSidebar()" class="fixed inset-0 bg-black/70 z-30 hidden backdrop-blur-md"></div>
+
+                <!-- 内容区 - 弹性填充 -->
+                <main class="flex-1 overflow-y-auto bg-[#05060a] relative no-scrollbar w-full h-full">
+                    <div id="project-content" class="w-[90%] md:w-[85%] max-w-5xl mx-auto py-12 md:py-20 space-y-12 md:space-y-24">
+                        <!-- 由JS生成 -->
+                    </div>
+                </main>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        const categories = [
+            { name: "UI / UX DESIGN", cn: "界面设计", projects: [
+                { title: "金融财富管理App 4.0", desc: "主导视觉升级与全链路交互框架重构，沉淀金融设计组件库。", imgCount: 4 },
+                { title: "智能投顾移动端", desc: "针对年轻用户群体的理财偏好，通过数据可视化提升决策效率。", imgCount: 3 },
+                { title: "企业级后台系统", desc: "复杂信息架构的扁平化处理，优化120%的办公协作效率。", imgCount: 5 }
+            ]},
+            { name: "WEB DESIGN", cn: "网页设计", projects: [
+                { title: "品牌数字化门户", desc: "响应式自适应设计，融合品牌调性与极简主义美学。", imgCount: 2 },
+                { title: "大促专题活动页", desc: "高饱和度视觉冲击力，配合微交互引导用户转化。", imgCount: 4 }
+            ]},
+            { name: "VISUAL DESIGN", cn: "视觉设计", projects: [
+                { title: "膝关节健康视觉策划", desc: "结合X光透视效果，建立专业、可信赖的健康广告形象。", imgCount: 2 },
+                { title: "品牌年度盛典主视觉", desc: "3D潮流设计风格，涵盖线上线下多端物料延伸。", imgCount: 3 }
+            ]},
+            { name: "BRAND & DERIVATIVES", cn: "品牌衍生", projects: [
+                { title: "IP吉祥物系统", desc: "完整的性格设定与三维模型规范，包含24款动态表情。", imgCount: 2 },
+                { title: "办公周边文创设计", desc: "环保理念与职场解压主题的融合，提升品牌内部凝聚力。", imgCount: 3 }
+            ]},
+            { name: "PRACTICE & OTHERS", cn: "其他探索", projects: [
+                { title: "AIGC设计实验", desc: "探索人工智能在UI插画与场景生成中的前沿应用。", imgCount: 4 },
+                { title: "日常创意排版", desc: "平面构图与中英文字体结合的极简视觉研究。", imgCount: 5 }
+            ]}
+        ];
+
+        let currentCatIndex = 0;
+        let currentProjIndex = 0;
+
+        function initHome() {
+            const list = document.getElementById('catalogue-list');
+            list.innerHTML = categories.map((cat, index) => `
+                <div onclick="openCategory(${index})" class="list-item-group group flex flex-col md:flex-row md:items-center justify-between py-10 md:py-14 border-b border-white/5 cursor-pointer">
+                    <div class="flex items-center gap-8 md:gap-16">
+                        <span class="text-3xl md:text-5xl font-light text-white/10 group-hover:text-white/40 w-[3rem] transition-all font-mono">0${index+1}</span>
+                        <h3 class="text-xl md:text-4xl font-light tracking-[0.2em] text-white group-hover:tracking-[0.3em] transition-all uppercase">${cat.name}</h3>
+                    </div>
+                    <div class="flex items-center gap-6 self-end md:self-auto mt-4 md:mt-0">
+                        <span class="text-[10px] text-mutedText tracking-[0.4em] uppercase">${cat.cn}</span>
+                        <svg class="w-8 h-8 md:w-10 md:h-10 text-white/10 arrow-icon transition-all" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.2" d="M17 7L7 17M7 7h10v10"></path>
+                        </svg>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function openCategory(index) {
+            currentCatIndex = index;
+            currentProjIndex = 0;
+            document.getElementById('home-view').classList.add('opacity-0', 'scale-[0.98]');
+            setTimeout(() => {
+                document.getElementById('home-view').classList.add('hidden');
+                document.getElementById('detail-view').classList.remove('hidden');
+                renderDetail();
+            }, 400);
+        }
+
+        function showHome() {
+            document.getElementById('detail-view').classList.add('hidden');
+            document.getElementById('home-view').classList.remove('hidden');
+            setTimeout(() => {
+                document.getElementById('home-view').classList.remove('opacity-0', 'scale-[0.98]');
+            }, 50);
+            window.scrollTo({top: 0, behavior: 'smooth'});
+        }
+
+        function toggleSidebar() {
+            const sidebar = document.getElementById('project-sidebar');
+            const overlay = document.getElementById('sidebar-overlay');
+            sidebar.classList.toggle('closed');
+            overlay.classList.toggle('hidden');
+        }
+
+        function switchCategory(index) {
+            currentCatIndex = index;
+            currentProjIndex = 0;
+            renderDetail();
+        }
+
+        function selectProject(index) {
+            currentProjIndex = index;
+            renderDetail(false);
+            if (window.innerWidth < 768) toggleSidebar(); 
+        }
+
+        function renderDetail(resetSidebar = true) {
+            const cat = categories[currentCatIndex];
+            
+            // 更新分类按钮状态
+            document.querySelectorAll('.nav-cat-btn').forEach((btn, i) => {
+                if(i === currentCatIndex) {
+                    btn.classList.add('bg-accent/10', 'text-white', 'shadow-[0_0_1rem_rgba(79,107,255,0.15)]');
+                    btn.classList.remove('text-mutedText');
+                } else {
+                    btn.classList.remove('bg-accent/10', 'text-white', 'shadow-[0_0_1rem_rgba(79,107,255,0.15)]');
+                    btn.classList.add('text-mutedText');
+                }
+            });
+
+            // 更新侧边栏内容
+            document.getElementById('current-cat-name').innerText = cat.name;
+            const sidebar = document.getElementById('project-sidebar-list');
+            sidebar.innerHTML = cat.projects.map((proj, idx) => `
+                <div onclick="selectProject(${idx})" class="sidebar-item mx-1 mb-2 px-6 py-5 rounded-2xl cursor-pointer hover:bg-white/5 group ${idx === currentProjIndex ? 'active' : ''}">
+                    <div class="flex items-center justify-between mb-2">
+                        <span class="text-[9px] text-accent font-mono font-bold tracking-widest">CASE 0${idx+1}</span>
+                    </div>
+                    <div class="text-[13px] font-bold text-white/90 group-hover:text-white transition-colors leading-tight">${proj.title}</div>
+                    <div class="text-[10px] text-mutedText mt-2 line-clamp-1 font-light tracking-wide">${proj.desc}</div>
+                </div>
+            `).join('');
+
+            // 更新大图内容
+            const content = document.getElementById('project-content');
+            const proj = cat.projects[currentProjIndex];
+            
+            // 使用随机高度模拟瀑布流，但图片宽度为100%
+            const heights = [800, 1000, 1200, 900];
+            let imagesHtml = '';
+            for(let i=0; i < proj.imgCount; i++) {
+                const h = heights[i % heights.length];
+                imagesHtml += `
+                    <div class="image-enter rounded-3xl overflow-hidden border border-white/[0.03] shadow-[0_2rem_4rem_rgba(0,0,0,0.5)] bg-sidebarBg w-full" style="animation-delay: ${i * 0.1}s">
+                        <img src="https://picsum.photos/seed/${cat.name}-${currentProjIndex}-${i}/1400/${h}" 
+                             alt="Works" class="w-full h-auto block opacity-0 transition-opacity duration-1000"
+                             onload="this.style.opacity='1'">
+                    </div>
+                `;
+            }
+
+            content.innerHTML = `
+                <div class="mb-12 md:mb-20 image-enter">
+                    <div class="flex items-center gap-4 mb-6">
+                        <span class="h-[1px] w-12 bg-accent/40"></span>
+                        <span class="text-accent text-[10px] font-mono tracking-[0.3em] uppercase">Project Narrative</span>
+                    </div>
+                    <h1 class="text-3xl md:text-5xl font-bold mb-8 tracking-tight text-white leading-tight">${proj.title}</h1>
+                    <p class="text-mutedText max-w-[90%] text-base md:text-xl font-light leading-relaxed">${proj.desc}</p>
+                </div>
+                <div class="space-y-12 md:space-y-24">
+                    ${imagesHtml}
+                </div>
+                <footer class="pt-24 pb-12 text-center">
+                    <button onclick="document.querySelector('#detail-view main').scrollTo({top: 0, behavior: 'smooth'})" 
+                            class="text-[9px] text-mutedText hover:text-white tracking-[0.6em] transition-colors uppercase border border-white/10 px-6 py-3 rounded-full hover:bg-white/5">
+                        - Top -
+                    </button>
+                </footer>
+            `;
+            
+            document.querySelector('#detail-view main').scrollTo({top: 0, behavior: 'smooth'});
+        }
+
+        window.onload = initHome;
+    </script>
+</body>
+</html>
